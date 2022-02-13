@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Form, Button, Spinner } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -8,6 +9,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const auth = getAuth();
+  const history = useHistory();
+  
   const handleLogin = () => {
     setLoading(true);
     signInWithEmailAndPassword(auth, email, password)
@@ -15,6 +18,11 @@ const Login = () => {
         const user = userCredential.user;
         console.log("Signed in user: ", user);
         setLoading(false);
+        //history.push("/main", {user});
+        history.push({
+          pathname: "/main",
+          state: user.uid ,
+        })
       })
       .catch((error) => {
         const errorCode = error.code;
