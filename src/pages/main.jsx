@@ -64,6 +64,7 @@ function Main() {
   const addData = async () => {
     const docRef = await addDoc(collection(db, "hospitals"), {
       name: hospitalDetail,
+      id: docRef.id,
     });
     console.log("Document written with ID: ", docRef.id);
     refresh();
@@ -138,7 +139,10 @@ function Main() {
               <Card>
                 <Row>
                   <Col>
-                    <Card.Body>{data.name}</Card.Body>
+                    <Card.Body>
+                      {data.name}
+                      <p style={{ fontSize: "12px" }}>ID: {data.id}</p>
+                    </Card.Body>
                   </Col>
                   <Col style={{ padding: "10px" }} sm={1}>
                     <Button
@@ -156,13 +160,16 @@ function Main() {
       )}
       {triggerSplit && (
         <div>
-          MANET Node 1
+          MANET 1
           {showSplit.map((data) => (
             <div style={{ padding: "10px" }}>
               <Card>
                 <Row>
                   <Col>
-                    <Card.Body>{data.name}</Card.Body>
+                    <Card.Body>
+                      {data.name}
+                      <p style={{ fontSize: "12px" }}>ID: {data.id}</p>
+                    </Card.Body>
                   </Col>
                   <Col style={{ padding: "10px" }} sm={1}>
                     <Button
@@ -180,13 +187,16 @@ function Main() {
       )}
       {secondaryTriggerSplit && (
         <div>
-          MANET Node 2
+          MANET 2
           {showSecondarySplit.map((data) => (
             <div style={{ padding: "10px" }}>
               <Card>
                 <Row>
                   <Col>
-                    <Card.Body>{data.name}</Card.Body>
+                    <Card.Body>
+                      {data.name}
+                      <p style={{ fontSize: "12px" }}>ID: {data.id}</p>
+                    </Card.Body>
                   </Col>
                   <Col style={{ padding: "10px" }} sm={1}>
                     <Button
