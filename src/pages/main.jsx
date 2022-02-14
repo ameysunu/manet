@@ -176,6 +176,11 @@ function Main() {
             Split
           </Button>
         </Col>
+        <Col>
+          <Button variant="outline-danger" onClick={() => setTriggerSplit(false)}>
+            Revert Split
+          </Button>
+        </Col>
       </Row>
       <AlertDismissible />
     </div>
