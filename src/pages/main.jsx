@@ -4,7 +4,8 @@ import {
   getDocs,
   getFirestore,
   addDoc,
-  query,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "../config/firebaseConfig";
@@ -40,6 +41,11 @@ function Main() {
     console.log("Document written with ID: ", docRef.id);
     refresh();
     setShowForm(false);
+  };
+
+  const deleteData = async (id) => {
+    await deleteDoc(doc(db, "hospitals", id));
+    refresh();
   };
 
   function AlertDismissible() {
@@ -95,7 +101,19 @@ function Main() {
       {hospitals.map((data) => (
         <div style={{ padding: "10px" }}>
           <Card>
-            <Card.Body>{data.name}</Card.Body>
+            <Row>
+              <Col>
+                <Card.Body>{data.name}</Card.Body>
+              </Col>
+              <Col style={{ padding: "10px" }} sm={1}>
+                <Button
+                  variant="outline-danger"
+                  onClick={() => deleteData(data.id)}
+                >
+                  Delete
+                </Button>
+              </Col>
+            </Row>
           </Card>
         </div>
       ))}
