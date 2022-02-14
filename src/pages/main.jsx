@@ -22,18 +22,22 @@ function Main() {
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-  useEffect(() => {
-    const getData = async () => {
-      const hospitalData = await getDocs(collection(db, "hospitals"));
-      hospitalData.forEach((doc) => {
-        setHospitals(
-          hospitalData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-        );
-        console.log(`${doc.data().name}`);
-      });
-    };
-    getData();
-  }, []);
+  useEffect(
+    () => {
+      const getData = async () => {
+        const hospitalData = await getDocs(collection(db, "hospitals"));
+        hospitalData.forEach((doc) => {
+          setHospitals(
+            hospitalData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+          );
+          console.log(`${doc.data().name}`);
+        });
+      };
+      getData();
+    },
+    //eslint-disable-next-line
+    []
+  );
 
   const refresh = () => {
     window.location.reload();
