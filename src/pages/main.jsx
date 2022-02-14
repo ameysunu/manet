@@ -17,6 +17,9 @@ function Main() {
   const [showForm, setShowForm] = useState(false);
   const [showSplit, setShowSplit] = useState("");
   const [triggerSplit, setTriggerSplit] = useState(false);
+  const [showSecondarySplit, setShowSecondarySplit] = useState("");
+  const [secondaryTriggerSplit, setSecondaryTriggerSplit] = useState(false);
+
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   useEffect(() => {
@@ -45,6 +48,13 @@ function Main() {
       console.log(`${doc.data().name}`);
     });
     setTriggerSplit(true);
+    const splitSecondaryData = await getDocs(collection(db, "splittwo"));
+    splitSecondaryData.forEach((doc) => {
+      setShowSecondarySplit(
+        splitSecondaryData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+      setSecondaryTriggerSplit(true);
+    });
   };
 
   const addData = async () => {
@@ -60,6 +70,11 @@ function Main() {
   const deleteData = async (id) => {
     await deleteDoc(doc(db, "hospitals", id));
     refresh();
+  };
+
+  const revertData = async () => {
+    setTriggerSplit(false);
+    setSecondaryTriggerSplit(false);
   };
 
   function AlertDismissible() {
@@ -112,7 +127,7 @@ function Main() {
   return (
     <div style={{ padding: "10px" }}>
       <h1>List of Hospitals</h1>
-      {!triggerSplit && (
+      {!triggerSplit && !secondaryTriggerSplit && (
         <div>
           {hospitals.map((data) => (
             <div style={{ padding: "10px" }}>
@@ -137,7 +152,32 @@ function Main() {
       )}
       {triggerSplit && (
         <div>
+          MANET Node 1
           {showSplit.map((data) => (
+            <div style={{ padding: "10px" }}>
+              <Card>
+                <Row>
+                  <Col>
+                    <Card.Body>{data.name}</Card.Body>
+                  </Col>
+                  <Col style={{ padding: "10px" }} sm={1}>
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => deleteData(data.id)}
+                    >
+                      Delete
+                    </Button>
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+          ))}
+        </div>
+      )}
+      {secondaryTriggerSplit && (
+        <div>
+          MANET Node 2
+          {showSecondarySplit.map((data) => (
             <div style={{ padding: "10px" }}>
               <Card>
                 <Row>
@@ -177,7 +217,7 @@ function Main() {
           </Button>
         </Col>
         <Col>
-          <Button variant="outline-danger" onClick={() => setTriggerSplit(false)}>
+          <Button variant="outline-danger" onClick={revertData}>
             Revert Split
           </Button>
         </Col>
