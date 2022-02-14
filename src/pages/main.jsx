@@ -15,6 +15,8 @@ function Main() {
   const [hospitals, setHospitals] = useState([]);
   const [hospitalDetail, sethospitalDetail] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [showSplit, setShowSplit] = useState("");
+  const [triggerSplit, setTriggerSplit] = useState(false);
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   useEffect(() => {
@@ -34,6 +36,17 @@ function Main() {
     window.location.reload();
   };
 
+  const getSplit = async () => {
+    const splitData = await getDocs(collection(db, "split"));
+    splitData.forEach((doc) => {
+      setShowSplit(
+        splitData.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+      );
+      console.log(`${doc.data().name}`);
+    });
+    setTriggerSplit(true);
+  };
+
   const addData = async () => {
     const docRef = await addDoc(collection(db, "hospitals"), {
       name: hospitalDetail,
@@ -41,6 +54,7 @@ function Main() {
     console.log("Document written with ID: ", docRef.id);
     refresh();
     setShowForm(false);
+    setTriggerSplit(false);
   };
 
   const deleteData = async (id) => {
@@ -98,32 +112,71 @@ function Main() {
   return (
     <div style={{ padding: "10px" }}>
       <h1>List of Hospitals</h1>
-      {hospitals.map((data) => (
-        <div style={{ padding: "10px" }}>
-          <Card>
-            <Row>
-              <Col>
-                <Card.Body>{data.name}</Card.Body>
-              </Col>
-              <Col style={{ padding: "10px" }} sm={1}>
-                <Button
-                  variant="outline-danger"
-                  onClick={() => deleteData(data.id)}
-                >
-                  Delete
-                </Button>
-              </Col>
-            </Row>
-          </Card>
+      {!triggerSplit && (
+        <div>
+          {hospitals.map((data) => (
+            <div style={{ padding: "10px" }}>
+              <Card>
+                <Row>
+                  <Col>
+                    <Card.Body>{data.name}</Card.Body>
+                  </Col>
+                  <Col style={{ padding: "10px" }} sm={1}>
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => deleteData(data.id)}
+                    >
+                      Delete
+                    </Button>
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+          ))}
         </div>
-      ))}
-      <div style={{ padding: "10px" }}>
-        {!showForm && (
-          <Button variant="outline-success" onClick={() => setShowForm(true)}>
-            + Add a new hospital
+      )}
+      {triggerSplit && (
+        <div>
+          {showSplit.map((data) => (
+            <div style={{ padding: "10px" }}>
+              <Card>
+                <Row>
+                  <Col>
+                    <Card.Body>{data.name}</Card.Body>
+                  </Col>
+                  <Col style={{ padding: "10px" }} sm={1}>
+                    <Button
+                      variant="outline-danger"
+                      onClick={() => deleteData(data.id)}
+                    >
+                      Delete
+                    </Button>
+                  </Col>
+                </Row>
+              </Card>
+            </div>
+          ))}
+        </div>
+      )}
+      <Row>
+        <Col>
+          <div style={{ padding: "10px" }}>
+            {!showForm && (
+              <Button
+                variant="outline-success"
+                onClick={() => setShowForm(true)}
+              >
+                + Add a new hospital
+              </Button>
+            )}
+          </div>
+        </Col>
+        <Col>
+          <Button variant="outline-primary" onClick={getSplit}>
+            Split
           </Button>
-        )}
-      </div>
+        </Col>
+      </Row>
       <AlertDismissible />
     </div>
   );
