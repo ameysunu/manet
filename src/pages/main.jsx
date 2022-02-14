@@ -63,8 +63,7 @@ function Main() {
 
   const addData = async () => {
     const docRef = await addDoc(collection(db, "hospitals"), {
-      name: hospitalDetail,
-      id: docRef.id,
+      name: hospitalDetail
     });
     console.log("Document written with ID: ", docRef.id);
     refresh();
