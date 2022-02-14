@@ -29,11 +29,17 @@ function Main() {
     getData();
   }, []);
 
+  const refresh = () => {
+    window.location.reload();
+  };
+
   const addData = async () => {
     const docRef = await addDoc(collection(db, "hospitals"), {
       name: hospitalDetail,
     });
     console.log("Document written with ID: ", docRef.id);
+    refresh();
+    setShowForm(false);
   };
 
   function AlertDismissible() {
