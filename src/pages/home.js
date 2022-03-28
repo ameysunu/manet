@@ -35,10 +35,9 @@ function Home() {
       </Card>
       <div style={{ paddingTop: "10px" }}>
         <Alert show={show} variant="success" onClose={handleClose}>
-          <Alert.Heading>Hospitals</Alert.Heading>
+          <Alert.Heading>Ambulances</Alert.Heading>
           <p>
-            This application creates a MANET which can connect various
-            hospitals, i.e. nodes, to provide patient details to the hospital,
+            This application creates a MANET which can connect various ambulances, i.e. nodes, to provide patient details to the hospital,
             with equipments that only certain hospitals have.
           </p>
           <hr />

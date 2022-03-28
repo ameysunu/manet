@@ -13,7 +13,7 @@ function AppBar() {
             to="/"
             exact
           >
-            Hospital Management
+            Ambulance Management
           </NavLink>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
