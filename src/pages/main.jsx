@@ -130,7 +130,7 @@ function Main() {
 
   return (
     <div style={{ padding: "10px" }}>
-      <h1>List of Hospitals</h1>
+      <h1>List of Ambulances</h1>
       {!triggerSplit && !secondaryTriggerSplit && (
         <div>
           {hospitals.map((data) => (
@@ -231,7 +231,7 @@ function Main() {
         </Col>
         <Col>
           <Button variant="outline-danger" onClick={revertData}>
-            Revert Split
+            Merge
           </Button>
         </Col>
       </Row>
